@@ -36,18 +36,51 @@
     if (canvas.getContext) {
         var ctx = canvas.getContext('2d');
 
-        var ctx = canvas.getContext('2d');
-
-        var rectangle = new Path2D();
-        rectangle.rect(10, 10, 50, 50);
-
-        var circle = new Path2D();
-        circle.moveTo(125, 35);
-        circle.arc(100, 35, 25, 0, 2 * Math.PI);
-
-        ctx.stroke(rectangle);
-        ctx.fill(circle);
+        init(ctx)
     }
+
+
+    function init(ctx) {
+
+
+
+        let scores = [50, 60, 70, 80, 90]
+
+        console.log(scores.length)
+
+        let base = canvas.height - 200
+
+        ctx.fillStyle = "green"
+
+        let x = 10, y , width = 70, height;
+
+        for(let i = 0; i < scores.length; i ++){
+            
+
+            x += width + 20;
+            y = base - height
+
+            
+            height = scores[i] * 2
+
+
+            ctx.fillStyle = "blue"
+            ctx.fillRect(x, y, width, height)
+
+            ctx.fillStyle = "cyan"
+            ctx.beginPath()
+            ctx.arc(x + width/2, y, 20, Math.PI * 2, false)
+            ctx.fill()
+
+        }
+
+
+
+
+
+
+    }
+
 
 </script>
 

@@ -1,75 +1,24 @@
 function onload() {
+  
+
+  var arcs = []
     var canvas = document.getElementById('canvas');
     if (canvas.getContext) {
       var ctx = canvas.getContext('2d');
   
-    //   ctx.fillRect(25, 25, 100, 100);
-    //   ctx.fillRect(250, 250, 1000, 1000);
-    //   ctx.stroke();
-    // //   ctx.clearRect(350, 350, 800, 800);
-    //   ctx.clearRect(45, 45, 60, 60);
-    //   ctx.strokeRect(50, 50, 50, 50);
-
-
-    // ctx.beginPath();
-    // ctx.moveTo(75, 50);
-    // ctx.lineTo(100, 75);
-    // ctx.lineTo(100, 25);
-    // ctx.lineTo(1000, 250);
-    // ctx.lineTo(500, 1);
-    // ctx.stroke();
-
-
-    // ctx.beginPath();
-    // ctx.arc(75, 75, 50, 0, Math.PI * 2, true); // Outer circle
-    // ctx.moveTo(110, 75);
-    // ctx.arc(75, 75, 35, 0, Math.PI, false);  // Mouth (clockwise)
-    // ctx.moveTo(65, 65);
-    // ctx.arc(60, 65, 5, 0, Math.PI * 2, true);  // Left eye
-    // ctx.moveTo(95, 65);
-    // ctx.arc(90, 65, 5, 0, Math.PI * 2, true);  // Right eye
-    // ctx.stroke();
-
-
-    // ctx.beginPath();
-    // ctx.arc(75, 75, 50, 0, Math.PI * 2, true); // Outer circle
-    // ctx.moveTo(110, 75);
-    // ctx.arc(75, 75, 35, 0, Math.PI, false);  // Mouth (clockwise)
-    // ctx.moveTo(65, 65);
-    // ctx.arc(60, 65, 5, 0, Math.PI * 2, true);  // Left eye
-    // ctx.moveTo(95, 65);
-    // ctx.arc(90, 65, 5, 0, Math.PI * 2, true);  // Right eye
-    // ctx.stroke();
-
-
-    // ctx.beginPath();
-    // ctx.moveTo(25, 25);
-    // ctx.lineTo(105, 25);
-    // ctx.lineTo(25, 105);
-    // ctx.fill();
-
-    // // Stroked triangle
-    // ctx.beginPath();
-    // ctx.moveTo(125, 125);
-    // ctx.lineTo(125, 45);
-    // ctx.lineTo(45, 125);
-    // ctx.closePath();
-    // ctx.stroke();
-
-
-
-    setInterval(() => {drawRandArcs(ctx)}, 100)
-    
-    
-
+      // drawRandArcs(ctx)
+      
+      
+      arcs = Arc.getRandArcs(800, 800, 40);
+      setInterval(() => {animate(ctx)}, 1000)
 
     }
 
+
+
     function drawRandArcs(ctx){
-        clearRect(ctx)
         for (var i = 0; i < 40; i++) {
             for (var j = 0; j < 30; j++) {
-              ctx.beginPath();
               var x = Math.random() *  ( i + 800 ); // x coordinate
               var y = Math.random() *  ( j + 800 ); // y coordinate
               var radius = 20; // Arc radius
@@ -77,34 +26,16 @@ function onload() {
               var endAngle = Math.PI + (Math.PI * Math.random() * 2) / 2; // End point on circle
               var anticlockwise = i % 2 !== 0; // clockwise or anticlockwise
 
-              ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise);
-              
-              let cp1x = x -  100
-              let cp1y = y - + 100
-              let cp2x = x - + 100
-              let cp2y = y -  - 100
-              
-              
-            //   ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y)
-
-
-              if((Math.random() * 10) % 2 == 0){
-                ctx.beginPath();
-              }
               
               let color = getRandomColor();
               
               ctx.strokeStyle = color;
-    
-              console.log(color)
-    
-            //   ctx.strokeStyle="#FF0000";
-    
-              if (i >= 0) {
-                ctx.stroke();
-              } else {
-                ctx.stroke();
-              }
+
+              
+              ctx.beginPath();
+              ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise);
+              ctx.stroke();
+
             }
           }
     }
@@ -123,4 +54,87 @@ function onload() {
       }
 
 
+
+      function animate(ctx){
+        update(ctx);
+        draw(ctx);
+        // console.log(arcs[1])
+      }
+
+      function update(ctx){
+        ctx.clearRect(0, 0, 800, 800)
+        arcs.forEach((element, index) => {
+          let {x,y} = element;
+          let curpos = {x, y}
+          let nextpos = Arc.getNext(800, 800);
+          
+          element = {...element, ...Arc.move(curpos,nextpos, 1)}
+          if(index == 1){
+            console.log(curpos, nextpos)
+          }
+        });
+      }
+
+      function draw(ctx){
+        arcs.forEach(element => {
+          Arc.draw(ctx, element)
+        });
+      }
+
+
+}
+
+
+const Arc = {
+  getRandArcs: (width, height, number) => {
+    let arcs = []
+    for (let i = 0; i < number; i++) {
+      for (let j = 0; j < number; j++) {
+        let x = Math.random() *  (i  + width)
+        let y = Math.random() *  (j + height)
+        let radius = 20;  
+        let startAngle = Math.random() * 10;  
+        let endAngle = Math.PI + (Math.PI * Math.random() * 2) / 2;  
+        let anticlockwise = i % 2 !== 0; 
+
+        let color = Arc.getRandomColor();
+        
+        arcs.push(
+          {
+            x, 
+            y, 
+            radius, 
+            startAngle, 
+            endAngle, 
+            anticlockwise, 
+            color
+          }
+        );
+      }
+    }
+    return arcs;
+  },
+  draw: (ctx, arc) => {
+    ctx.beginPath();
+    ctx.arc(arc.x, arc.y, arc.radius, arc.startAngle, arc.endAngle, arc.anticlockwise);
+    ctx.strokeStyle = arc.color;
+    ctx.stroke();
+  },
+  getRandomColor : () => {
+    let letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  },
+  getNext: (width, height) => {
+    return {x: Math.random() * width, y: Math.random() * height, }
+  },
+  move: (curpos, nextpos, speed) => {
+    let {x,y} = curpos
+    x += curpos.x < nextpos.x ? speed : -speed
+    y += curpos.y < nextpos.y ? speed : -speed
+    return {x, y}
+  }
 }
