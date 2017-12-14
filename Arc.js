@@ -30,12 +30,13 @@ export class Arc {
       .arc(this.x, this.y, this.radius, this.startAngle, this.endAngle, this.anticlockwise);
     this.context.strokeStyle = this.color;
     this.context.fillStyle = this.color;
+
     this
       .context
       .fill();
     
     if ((Math.abs(this.x - this.nextpos.x) <= this.speed) && (Math.abs(this.y - this.nextpos.y) <= this.speed)) {
-      this.getNext(800, 800)
+      this.getNext(1920, 1080)
       this.color = Arcs.getRandomColor()
     }
     
