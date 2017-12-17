@@ -83,7 +83,6 @@ export const CurvesGenerator = {
     curves.forEach(curve => {
       ctx.bezierCurveTo(curve.c1x, curve.c1y, curve.c2x, curve.c2y, curve.x, curve.y);
     })
-
   },
   getRandomColor: () => {
     let letters = '0123456789ABCDEF';
