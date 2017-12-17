@@ -1,3 +1,5 @@
+import { MOUSE_MOVE, MOUSE_ENTER, MOUSE_DOWN, MOUSE_LEAVE, MOUSE_UP, MOUSE_CLICK, MOUSE_DBLCLICK } from "./mouse-events.js";
+
 export const windowToCanvas = (event, crect) => {
     return {
         x: event.clientX - crect.left, // * (canvas.width  / crect.width),
@@ -6,7 +8,7 @@ export const windowToCanvas = (event, crect) => {
 }
 
 export const EventRegister = {
-    events : ['onmousemove', 'onmouseenter', 'onmousedown', 'onmouseleave', 'onmouseup', 'onclick', 'ondblclick'],
+    events : [MOUSE_MOVE, MOUSE_ENTER, MOUSE_DOWN, MOUSE_LEAVE, MOUSE_UP, MOUSE_CLICK, MOUSE_DBLCLICK],
     register: (element, component, events = EventRegister.events) => {
         let crect;
         setTimeout(() => {

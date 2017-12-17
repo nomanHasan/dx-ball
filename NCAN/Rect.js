@@ -2,12 +2,13 @@ import {PointFactory} from "./Point.js";
 import {NumberFactory} from "./Number.js";
 
 export class Rect {
-    constructor(x, y, width, height, context) {
+    constructor(x, y, width, height, context, zindex = 0) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.context = context;
+        this.zindex = zindex;
 
         this.mouseState = {
             drag: false,
