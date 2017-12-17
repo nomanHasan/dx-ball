@@ -12,8 +12,8 @@ const percentage = (number, perc) => {
     return (number * perc)/100
 }
 
-canvas.width = percentage(windowWidth, 50)
-canvas.height = percentage(windowHeight, 50)
+canvas.width = percentage(windowWidth, 80)
+canvas.height = percentage(windowHeight, 80)
 
 
 export var canvasWidth = canvas.width;

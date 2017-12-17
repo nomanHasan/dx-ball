@@ -2,6 +2,7 @@ import { EventRegister } from './NCAN/events/EventRegister.js';
 import {context, canvas, canvasWidth, canvasHeight} from './initializeCanvas.js'
 import { Layer } from './NCAN/Layer.js';
 import { Rect } from './NCAN/Rect.js';
+import { NumberFactory } from './NCAN/Number.js';
 
 
 // canvas.height = 500
@@ -35,6 +36,22 @@ bottomBorder.fill = true;
 
 gameLayer.addShape(rect)
 gameLayer.addShape(new Rect(120, canvasHeight-25, 100, 80, context))
+
+
+for(let i = 0; i< 20; i++){
+
+
+    let x = NumberFactory.getRandomBetween(1, canvasWidth);
+    let y = NumberFactory.getRandomBetween(1, canvasHeight);
+    
+    let width = NumberFactory.getRandomBetween(1, 100);
+    
+    let height = NumberFactory.getRandomBetween(1, 100);
+
+    gameLayer.addShape(new Rect(x, y, width, height, context))
+}
+
+
 gameLayer.addShape(new Rect(140, canvasHeight-25, 100, 80, context))
 gameLayer.addShape(new Rect(150, canvasHeight-25, 100, 80, context))
 gameLayer.addShape(new Rect(160, canvasHeight-25, 100, 80, context))

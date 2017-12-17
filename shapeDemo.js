@@ -56,5 +56,3 @@ function animate() {
     requestAnimationFrame(animate)
 }
 console.log(context)
-
-

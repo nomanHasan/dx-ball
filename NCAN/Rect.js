@@ -56,7 +56,10 @@ export class Rect {
         }
     }
 
-    ondrag(event) {        
+    ondrag(event) {     
+        
+        console.log('RET DRAG', this._id)
+        
         if (this.mouseState.drag) {
             this.x = event.x - this.mouseState.offset.x;
             this.y = event.y - this.mouseState.offset.y;
@@ -87,7 +90,7 @@ export class Rect {
 
     onmouseup(evnet) {
         this.mouseState.drag = false
-        console.log(this.mouseState)
+        // console.log(this.mouseState)
         this.dispatchDraw()
     }
 

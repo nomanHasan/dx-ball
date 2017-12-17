@@ -17,7 +17,7 @@ console.log(canvas, context, windowWidth)
 
 
 
-let rects = Array.from(Array(50).keys())
+let rects = Array.from(Array(1000).keys())
     .map(el => RectFactory.generateRandomRect(-windowWidth, -windowHeight, windowWidth * 2, windowHeight * 2, 15, 5))
     .map(rect => {
         rect.color = ColorFactory.getRandomColor();
