@@ -1,6 +1,6 @@
 var body = document.getElementsByTagName('body')[0]
 var canvasContainer = document.getElementById('canvas-container')
-var canvas = document.getElementById('canvas')
+var element = document.getElementById('canvas')
 var options = document.getElementById('options')
 
 changeBackground("rgb(222, 222, 222)")
@@ -19,7 +19,7 @@ lightButton.onclick = (event) => {
 
 function changeBackground(color) {
     body.style.background = color
-    canvas.style.background = color
+    element.style.background = color
 }
 
 

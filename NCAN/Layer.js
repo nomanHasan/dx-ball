@@ -1,6 +1,6 @@
 import { NumberFactory } from "./Number.js";
 import { EventRegister } from './events/EventRegister.js'
-import { MOUSE_MOVE, MOUSE_LEAVE } from "./events/mouse-events.js";
+import { MOUSE_MOVE, MOUSE_LEAVE, MOUSE_ENTER } from "./events/mouse-events.js";
 
 export class Layer {
 
@@ -15,81 +15,49 @@ export class Layer {
         EventRegister.events.forEach(eventName => {
             this[eventName] = (event) => {
                 this.shapes.forEach(shape => {
-                    // if (shape.isInside && !shape.isInside(event)) {
-                        // if (shape.mouseover) {
-                        //     shape.mouseover = false;
-                        //     execute(shape, 'onmouseleave', event)
-                        // } else {
-                        //     return
-                        // }
-                    // } else {
-                        // shape.mouseover = true;
-                        // execute(shape, eventName, event)
-                    // }
+                    let eventQueue = []
 
-                    // if (shape.mouseState.down == "true" && eventName == "mousemove") {
-                    //     execute(shape, eventName, event)
-                    // } else {
-                    //     if (shape.isInside && !shape.isInside(event)) {
-                    //         if (shape.mouseover) {
-                    //             shape.mouseover = false;
-                    //             execute(shape, 'onmouseleave', event)
-                    //         } else {
-                    //             return ;
-                    //         }
-                    //     } else {
-                    //         if(!shape.mouseover){
-                    //             shape.mouseover = true;
-                    //             execute(shape, 'mouseenter', event)
-                    //         }else{
+                    switch(eventName){
+                        case MOUSE_MOVE: {
+                            if(shape.mouseState.drag){
+                                eventQueue.push(MOUSE_MOVE)
+                            }else {
+                                if(shape.isInside && !shape.isInside(event)){
+                                    if (shape.mouseState.over) {
+                                        shape.mouseState.over = false;
+                                        eventQueue.push(MOUSE_LEAVE)
+                                    } else {
+                                        return
+                                    }
+                                }else{
+                                    if(!shape.mouseState.over){
+                                        shape.mouseState.over = true;
+                                        eventQueue.push(MOUSE_ENTER)
+                                    }
+                                    eventQueue.push(eventName)
+                                }
+                            }
+                            break;
+                        }
+                        default: {
+                            if(shape.isInside && !shape.isInside(event)){
+                                if (shape.mouseState.over) {
+                                    shape.mouseState.over = false;
+                                    eventQueue.push(MOUSE_LEAVE)
+                                } else {
+                                    return ;
+                                }
+                            } else {
+                                if (!shape.mouseState.over) {
+                                    shape.mouseState.over = true;
+                                    eventQueue.push(MOUSE_ENTER)
+                                }
+                                eventQueue.push(eventName)
+                            }                            
+                        }
+                    }
 
-                    //         }
-
-                    //         execute(shape, eventName, event)
-                    //     }
-                    // }
-
-
-                    console.log(eventName);
-                    // switch(eventName){
-                    //     case MOUSE_MOVE: {
-                    //         if(shape.mouseState.down){
-                    //             execute(shape, eventName, event)
-                    //         }else {
-                    //             if(shape.isInside && !shape.isInside(event)){
-                    //                 if (shape.mouseState.over) {
-                    //                     shape.mouseState.over = false;
-                    //                     execute(shape, MOUSE_LEAVE, event)
-                    //                 } else {
-                    //                     return
-                    //                 }
-                    //             }else{
-                    //                 if(!shape.mouseState.over){
-                    //                     shape.mouseState.over = true;
-                    //                 }
-                    //                 execute(shape, eventName, event)
-                    //             }
-                    //         }
-                    //         break;
-                    //     }
-                    //     default: {
-                    //         if(shape.isInside && !shape.isInside(event)){
-                    //             if (shape.mouseover) {
-                    //                 shape.mouseover = false;
-                    //                 execute(shape, MOUSE_LEAVE, event)
-                    //             } else {
-                    //                 return ;
-                    //             }
-                    //         }else{
-                    //             shape.mouseover = true;
-                    //             execute(shape, eventName, event)
-                    //         }                            
-                    //     }
-                    // }
-
-
-                    execute(shape, eventName, event)
-                    
+                    eventQueue.forEach(e => execute(shape, e, event))
                 })
             }
         })
